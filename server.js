@@ -113,6 +113,47 @@ app.post('/register', function(req,res) {
        });   
 });
 
+app.get('/rate', (req, res) => {
+    res.render('rate' ,{ id:req.query._id , name:req.query.ratename});
+   });
+app.post('/rate', (req, res) => {  
+
+    MongoClient.connect(url, function (err, db) {
+        if(err) throw err;
+        var db2 = db.db("pj381f");
+        console.log('mongodb is running!');
+        console.log("Switched to "+db2.databaseName+" database"); 
+
+        var user = { name:req.body.ratename , _id:ObjectId( req.body.uid ) }; 
+        console.log(user);
+            db2.collection("restaurant").findOne(user,function(err, result) {
+                if( result.owner != req.session.username ) {
+                var id = { _id : ObjectId( req.body.uid ) , name : result.owner }; 
+                var newvalues = {$set: {        
+                    grades: { user: req.session.username,
+                        score: req.body.ratename,
+                     },
+                    } };
+                        db2.collection("restaurant").updateOne( id ,newvalues, function(err, res) {
+                            if (err) throw err;
+                                console.log("You"+ req.session.username +" has rated " + result.owner );      
+                                    db.close();
+                            }); 
+                        }else{
+                            res.writeHead(200, {'Content-Type': 'text/html'});
+                            res.write('You cannot Rate Yourself.');
+                            res.write('<form action="/index">');
+                            res.write('<input type="submit" value="Go Back"/>');
+                            res.write('</form>');
+                            res.end();
+
+                        }
+            });
+
+
+        });
+
+   });
 app.get('/index', (req, res) => {
     if ( !req.session.login )
         res.redirect('/login')

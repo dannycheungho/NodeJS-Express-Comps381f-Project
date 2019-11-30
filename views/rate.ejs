@@ -1,0 +1,15 @@
+
+<% if (  ( id || name) == null ){
+     %>
+     <h1>Please enter by rate button</h1>
+    <form action="/index"><input type="submit" value="Go Back"/></form> <%
+}%>
+
+Score (1-10):
+<form action="/rate" method="POST" >
+<input type='number' name='score' min=1 max=10> <br>
+<input type='hidden' name='uid' value='<%= id %>' />
+<input type='hidden' name='ratename' value='<%= name %>'/>
+<hr />
+<input type='submit' value='Rate' />
+</form>

@@ -36,7 +36,7 @@
             <label>Map</label><hr />
             
             <% console.log('test:' + result._id) %>
-            <input type="button" value="Rate"/>
+            <a href="/rate?_id=<%= result._id%>&ratename=<%= result.name%>">Rate</a>
             <a href="/update?_id=<%= result._id%>">Update</a>
             <input type="button" value="Delete"/>
             <form action="/index"><input type="submit" value="Go Back"/></form>
