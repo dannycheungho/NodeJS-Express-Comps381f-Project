@@ -1,0 +1,46 @@
+<html>
+    <head>
+     <link href="/css/style.css" rel="stylesheet" type="text/css">
+    </head>
+        <body>
+             <% 
+                    if( !result.borough ) 
+                    result.borough = ""; 
+                    if( !result.cuisine ) 
+                    result.cuisine = ""; 
+                    if( !result.address.street ) 
+                    result.address.street = ""; 
+                    if( !result.address.building ) 
+                    result.address.building = ""; 
+                    if( !result.address.zipcode ) 
+                    result.address.zipcode = ""; 
+                    if( !result.address.coord.latitude ) 
+                    result.address.latitude = ""; 
+                    if( !result.address.coord.longitude ) 
+                    result.address.longitude = ""; 
+                    if( !result.rating ) 
+                    result.rating = ""; 
+                %>
+
+
+                <center><img src="data:<%=result.mimetype%>;base64, <%=result.photo %>"></center>
+            <label>Name: <%= result.name %> </label><br><hr />
+            <label>Borough: <%= result.borough %> </label><br><hr />
+            <label>Cuisine: <%=result.cuisine%></label><br><hr />
+            <label>Street:  <%=result.address.street%></label><br><hr />
+            <label>Building:  <%=result.address.building %></label><br><hr />
+            <label>Zipcode: <%= result.address.zipcode %></label><br><hr />
+            <label>GPS: <%= result.address.coord.latitude %> </label> , <label><%= result.address.coord.longitude %> </label><br><hr />
+            <label>Rating: <%= result.rating%></label><br><hr />
+            <label>Created by:  <%=result.owner %> </label><br><hr />
+            <label>Map</label><hr />
+            
+            <% console.log('test:' + result._id) %>
+            <input type="button" value="Rate"/>
+            <a href="/update?_id=<%= result._id%>">Update</a>
+            <input type="button" value="Delete"/>
+            <form action="/index"><input type="submit" value="Go Back"/></form>
+            </form>
+        
+    </body>
+</html>

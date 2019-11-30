@@ -1,0 +1,25 @@
+{
+  "name": "pj381f",
+  "version": "1.0.0",
+  "description": "Project 381f",
+  "main": "server.js",
+  "scripts": {
+    "test": "error?",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "project"
+  ],
+  "author": "Danny",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-session": "^1.3.3",
+    "ejs": "^1.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "formidable": "^1.2.1",
+    "mongodb": "^3.3.5",
+    "mongoose": "^5.7.12",
+    "multer": "^1.4.2"
+  }
+}

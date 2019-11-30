@@ -1,0 +1,25 @@
+
+<% if(!login) {%>
+<h2>Hello World</h2>
+<% }else{%>
+    
+ <html>
+        <head>
+            <link href="/css/style.css" rel="stylesheet" type="text/css">
+        </head>
+                <body>
+
+                <a href="/Create">Create New Restaurant   </a> 
+                <h3>Welcome <%=username%></h3>
+
+                <% result.forEach(element => { 
+                        %>    
+                <a href="/display?_id=<%= element._id%>"><%= element.name %> </a><br>
+                <% }); %>
+
+                <form action="/logout"><input type="submit" value="logout"/></form>
+                </form></body></html>
+                <h1><a href='/logout'>Logout</a></h1>
+                </body>
+</html>
+    <% }%>

@@ -1,0 +1,14 @@
+<% if(!login) {%>
+      <h2>Sign in</h2>
+      <form action="/login" method="POST">
+            
+            <input type="text" name="username"  placeholder="Username or email">
+
+            <input type="password" name="password" placeholder="Password">
+
+          <button type="submit" class="float">Login</button>
+      </form>
+      <% }else{%>
+            <meta http-equiv="refresh" content="0; url=/index" />
+
+            <% }%>

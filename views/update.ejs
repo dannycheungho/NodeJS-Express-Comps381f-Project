@@ -1,0 +1,67 @@
+<% 
+if( !result.borough ) 
+result.borough = ""; 
+if( !result.cuisine ) 
+result.cuisine = ""; 
+if( !result.address.street ) 
+result.address.street = ""; 
+if( !result.address.building ) 
+result.address.building = ""; 
+if( !result.address.zipcode ) 
+result.address.zipcode = ""; 
+if( !result.address.coord.latitude ) 
+result.address.latitude = ""; 
+if( !result.address.coord.longitude ) 
+if( !result.rating ) 
+result.rating = ""; 
+
+if ( username != result.owner ) {  %>
+    <h1> You have not permission! </h1>
+    <form action="/index"><input type="submit" value="Go Back"/></form>
+            
+    <%
+}else {
+    var mykey = JSON.stringify(key);
+    var mskey = JSON.parse(mykey);
+
+%>
+
+
+
+
+<html>
+    <head>
+     <link href="/css/style.css" rel="stylesheet" type="text/css">
+    </head>
+        <body>
+            <div class="container">
+                <form action="/update" method="POST"  enctype="multipart/form-data">
+                        <input type="hidden" name="key" value="<%= mskey._id %>" />
+                        <label for="name">Restaurant Name</label>
+                        <input type="text" name="name"  value="<%= result.name %>"  required><hr />
+                        <label for="borough">Borough</label>
+                        <input type="text" name="borough"  value="<%= result.borough %>" ><hr />
+                        <label for="Cuisine">Cuisine</label>
+                        <input type="text" name="cuisine" value="<%= result.cuisine %>"><hr />
+                        <label for="Street">Street</label>
+                        <input type="text" name="street"  value="<%= result.address.street %>" ><hr />
+                        <label for="Building">Building</label>
+                        <input type="text" name="building"  value="<%= result.address.building %>" ><hr />
+                        <label for="zipcode">Zip code</label>
+                        <input type="text" name="zipcode"  value="<%= result.address.zipcode %>" ><hr />
+                        <label for="latitude">latitude</label>
+                        <input type="text" name="latitude"  value="<%= result.address.coord.latitude %>"><hr />
+                        <label for="longitude">Longitude</label>
+                        <input type="text" name="longitude"  value="<%= result.address.coord.longitude %>" ><hr />
+                        
+                        <input type="file" name="filetoupload">
+                        <label for="photo">Photo</label>
+                        
+            
+                        <input type="hidden" name="owner" value="<%=username %>"  placeholder="owner" required>
+                        <input type="submit" value='Edit'></button>
+                </form>
+            </div>
+        </body>
+ </html>
+ <%  } %>

@@ -1,0 +1,63 @@
+<% if(!login) {%>
+  Please login first 
+<% }else{ 
+  
+  
+  
+  
+  
+  %>  
+  <html>
+      <head>
+       <link href="/css/style.css" rel="stylesheet" type="text/css">
+      </head>
+          <body>
+              <div class="create">
+                  <div class="heading">
+                    <h2>Create</h2>
+                    <form action="/Create" method="POST"  enctype="multipart/form-data">
+                        <input type="hidden" name="r_id" value=''><hr />
+                      
+                          <label for="name">Restaurant Name</label>
+                          <input type="text" name="name"  placeholder="name" required><hr />
+                          <label for="borough">Borough</label>
+                          <input type="text" name="borough"  placeholder="borough"><hr />
+                          <label for="Cuisine">Cuisine</label>
+                          <input type="text" name="cuisine"  placeholder="cuisine"><hr />
+                          <label for="Street">Street</label>
+                          <input type="text" name="street"  placeholder="street"><hr />
+                          <label for="Building">Building</label>
+                          <input type="text" name="building"  placeholder="building"><hr />
+                          <label for="zipcode">Zip code</label>
+                          <input type="text" name="zipcode"  placeholder="zipcode"><hr />
+                          <label for="latitude">Latitude</label>
+                          <input type="text" name="latitude"  placeholder="latitude"><hr />
+                          <label for="longitude">Longitude</label>
+                          <input type="text" name="longitude"  placeholder="longitude"><hr />
+                          <input type="file" name="filetoupload">
+                          <input type="submit" value="Submit"/>
+                           <!-- upload photo-->
+                           
+                            
+                          
+                           
+
+                          <input type="hidden" name="owner" value="<%=username %>"  placeholder="owner" required>
+                          
+                          </form>
+
+
+
+
+
+                          <input type="submit" value="Back"/>
+                          <input type="submit" value="Edit"/>
+                        </div>
+                </div>
+           </body>
+        </html>
+                
+   <% 
+  
+       
+}  %>
