@@ -500,7 +500,57 @@ app.get('/api/restaurant/read/name/:name', (req, res) => {
     
 });
 
+app.get('/api/restaurant/:r_id',function(req,res){
 
+	console.log('Restaurant: ' + req.r_id);
+
+	let results = restaurant.filter((r_id) => {
+		return restaurant.r_id == req.params.r_id;
+	});
+	res.status(200).type('json').json(results).end();
+});
+app.get('/api/restaurant/:borough',function(req,res){
+	console.log('Borough: ' + req.borough);
+
+	let results = restaurant.filter((borough) => {
+		return restaurant.borough == req.params.borough;
+	});
+	res.status(200).type('json').json(results).end();
+});
+app.get('/api/restaurant/:cuisine',function(req,res){
+	console.log('Cuisine: ' + req.cuisine);
+
+	let results = restaurant.filter((cuisine) => {
+		return restaurant.cuisine == req.params.cuisine;
+	});
+	res.status(200).type('json').json(results).end();
+});
+
+app.post('/api/restaurant/',function(req,res) {
+
+	console.log('Restaurant: ' + req.name);
+
+	console.log('Street: ' + req.street);
+
+	console.log('Building: ', req.building);
+
+	console.log('Zipcode: ' + req.zipcode);
+
+	console.log('Borough: ' + req.borough);
+	
+	console.log('Cuisine: ' + req.cuisine);
+	
+	let newRestaurant = {};
+
+	newRestaurant['name'] = req.body.r_id;
+
+	newRestaurant['age'] = req.body.age;
+
+	restaurant.push(newRestaurant);
+
+	res.status(200).type('json').json(restaurant).end();
+
+});
 
 //app.get('/login', function(req,res) { 
   //  authenticate(req.body.username, req.body.password, function(err, user){
