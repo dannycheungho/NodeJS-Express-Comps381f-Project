@@ -474,31 +474,129 @@ app.post('/delete', function(req,res) {
 app.get('/api/restaurant/read/name/:name', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
   //  res.write('get');
-    var result = {};
-
-
-
+    var newRestaurant = {};
     MongoClient.connect(url, function (err, db) {
         if(err) throw err;
         var db2 = db.db("pj381f");
         console.log('mongodb is running!');
         console.log("ResultFul API GETTING"); 
-
-        id = { name: req.params.name };
-            db2.collection("restaurant").find(id).toArray(function(err, data) {
+        cname = { name: req.params.name };
+            db2.collection("restaurant").find(cname).toArray(function(err, data) {
                 if (data != null) {
                     db.close();
-                    res.status(200).json(data).end();
+                    newRestaurant = data;
+                    res.status(200).json(newRestaurant).end();
                 }       
                 else{
-                    console.log('null');
+                   // newRestaurant['static'] = 'failed';
+                    newRestaurant = {};
+                    res.status(200).json(newRestaurant).end();
                     db.close(); }
                 }); 
-
     });
-
-    
 });
+app.get('/api/restaurant/read/borough/:borough', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+  //  res.write('get');
+    var newRestaurant = {};
+    MongoClient.connect(url, function (err, db) {
+        if(err) throw err;
+        var db2 = db.db("pj381f");
+        console.log('mongodb is running!');
+        console.log("ResultFul API GETTING"); 
+        cname = { borough: req.params.borough };
+            db2.collection("restaurant").find(cname).toArray(function(err, data) {
+                if (data != null) {
+                    db.close();
+                    newRestaurant = data;
+                    res.status(200).json(newRestaurant).end();
+                }       
+                else{
+                   // newRestaurant['static'] = 'failed';
+                    newRestaurant = {};
+                    res.status(200).json(newRestaurant).end();
+                    db.close(); }
+                }); 
+    });
+});
+app.get('/api/restaurant/read/cuisine/:cuisine', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+  //  res.write('get');
+    var newRestaurant = {};
+    MongoClient.connect(url, function (err, db) {
+        if(err) throw err;
+        var db2 = db.db("pj381f");
+        console.log('mongodb is running!');
+        console.log("ResultFul API GETTING"); 
+        cname = { cuisine: req.params.cuisine };
+            db2.collection("restaurant").find(cname).toArray(function(err, data) {
+                if (data != null) {
+                    db.close();
+                    newRestaurant = data;
+                    res.status(200).json(newRestaurant).end();
+                }       
+                else{
+                   // newRestaurant['static'] = 'failed';
+                    newRestaurant = {};
+                    res.status(200).json(newRestaurant).end();
+                    db.close(); }
+                }); 
+    });
+});
+
+
+app.post('/api/restaurant/',function(req,res){
+        MongoClient.connect(url, function (err, db) {
+            const db2 = db.db('pj381f');
+            console.log(req.body);
+            var _coord = { latitude: req.body.latitude , longitude: req.body.longitude};
+            var doc = { restaurant_id: req.body.r_id ,
+                            name: req.body.name , 
+                        borough: req.body.borough,
+                        cuisine: req.body.cuisine,
+                        photo: new_r['image'],
+                        mimetype: new_r['mimetype'],
+                        address: { street: req.body.street,
+                            building: req.body.building,
+                            zipcode: req.body.zipcode,
+                            street: req.body.street,
+                            coord: _coord,
+                        },
+                    grades: { user: req.body.user, score: req.body.score },
+                    owner: req.body.owner,
+            }; 
+            console.log(doc);
+
+            db2.collection("restaurant").insertOne(doc, function(err, res) {
+                if (err) throw err;
+                    console.log("Document inserted");      
+                    }); 
+                    var newRestaurant = {};
+                    id = { name: req.body.name, owner: req.body.owner };
+
+                    console.log(id);
+                    db2.collection("restaurant").findOne(id, function(err, data) {
+                        if (data != null) {
+                            db.close();
+                            newRestaurant['static'] = 'ok';
+                            newRestaurant['id'] = data._id;
+                            res.status(200).json(newRestaurant).end();
+                        }       
+                        else{
+                            // newRestaurant['static'] = 'failed';
+                            newRestaurant = {};
+                            res.status(200).json(newRestaurant).end();
+                            db.close(); }
+                        }); 
+
+
+
+
+
+                    })
+
+});
+
 
 app.get('/api/restaurant/:r_id',function(req,res){
 
@@ -509,48 +607,7 @@ app.get('/api/restaurant/:r_id',function(req,res){
 	});
 	res.status(200).type('json').json(results).end();
 });
-app.get('/api/restaurant/:borough',function(req,res){
-	console.log('Borough: ' + req.borough);
 
-	let results = restaurant.filter((borough) => {
-		return restaurant.borough == req.params.borough;
-	});
-	res.status(200).type('json').json(results).end();
-});
-app.get('/api/restaurant/:cuisine',function(req,res){
-	console.log('Cuisine: ' + req.cuisine);
-
-	let results = restaurant.filter((cuisine) => {
-		return restaurant.cuisine == req.params.cuisine;
-	});
-	res.status(200).type('json').json(results).end();
-});
-
-app.post('/api/restaurant/',function(req,res) {
-
-	console.log('Restaurant: ' + req.name);
-
-	console.log('Street: ' + req.street);
-
-	console.log('Building: ', req.building);
-
-	console.log('Zipcode: ' + req.zipcode);
-
-	console.log('Borough: ' + req.borough);
-	
-	console.log('Cuisine: ' + req.cuisine);
-	
-	let newRestaurant = {};
-
-	newRestaurant['name'] = req.body.r_id;
-
-	newRestaurant['age'] = req.body.age;
-
-	restaurant.push(newRestaurant);
-
-	res.status(200).type('json').json(restaurant).end();
-
-});
 
 //app.get('/login', function(req,res) { 
   //  authenticate(req.body.username, req.body.password, function(err, user){
