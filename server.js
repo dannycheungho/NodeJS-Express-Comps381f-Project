@@ -142,17 +142,26 @@ app.post('/rate', (req, res) => {
         console.log(user);
             db2.collection("restaurant").findOne(user,function(err, result) {
                 if( result.owner != req.session.username ) {
-                var id = { _id : ObjectId( req.body.uid ) , name : result.owner }; 
+                    console.log(result.owner);
+                    console.log(req.session.username);
+                var id = { _id : ObjectId( req.body.uid ) , owner : result.owner }; 
                 var newvalues = {$set: {        
-                    grades: { user: req.session.username,
-                        score: req.body.ratename,
-                     },
+                                    grades: { user: req.session.username,
+                                            score: req.body.score,
+                                    },
                     } };
                         db2.collection("restaurant").updateOne( id ,newvalues, function(err, res) {
                             if (err) throw err;
-                                console.log("You"+ req.session.username +" has rated " + result.owner );      
-                                    db.close();
+                               // console.log("You"+ req.session.username +" has rated " + result.owner );      
+                               db.close();
                             }); 
+                            
+                            res.writeHead(200, {'Content-Type': 'text/html'});
+                            res.write('You '+ req.session.username +" has rated " + result.owner );
+                            res.write('<form action="/index">');
+                            res.write('<input type="submit" value="Go Back"/>');
+                            res.write('</form>');
+                            res.end();
                         }else{
                             res.writeHead(200, {'Content-Type': 'text/html'});
                             res.write('You cannot Rate Yourself.');
