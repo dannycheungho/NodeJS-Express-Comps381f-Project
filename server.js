@@ -9,6 +9,8 @@ var {ObjectId} = require('mongodb');
 var bodyParser = require('body-parser');
 
 
+
+
 app.set('trust proxy',1);
 app.use(express.urlencoded({ extended: false }))
 app.set('view engine', 'ejs');
@@ -35,6 +37,14 @@ var new_r = {};
 
 
 app.listen(app.listen(process.env.PORT || 8099 ))
+
+
+
+
+app.get('/map', function(req,res) {
+    res.render('map', { latitude: req.query.latitude, longitude: req.query.longitude })
+});
+
 
 app.get('/', function(req,res) {
     res.redirect('/login')
@@ -108,8 +118,12 @@ app.post('/register', function(req,res) {
             // close the connection to db when you are done with it
             db.close();
             }); 
-            
-            res.send('user registered');
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.write('user registered');
+            res.write('<form action="/logout">');
+            res.write('<input type="submit" value="Go Back"/>');
+            res.write('</form>');
+            res.end();
        });   
 });
 
@@ -164,13 +178,47 @@ app.get('/index', (req, res) => {
         var db2 = db.db("pj381f");
         console.log('mongodb is running!');
         console.log("Switched to "+db2.databaseName+" database"); 
+        
 
-        db2.collection("restaurant").find({}).toArray(function(err, data) {
-            db.close();
-           // console.log(result[0].name);  
-                res.render('index', {result: data})
-            });
-        });
+        if( req.query.search!=null ) {
+            
+            switch ( req.query.search ) {
+                    case 'name' : 
+                    var id = {  name: req.query.searchdate    };
+                    break;
+                    case 'borough' : 
+                    var id = { borough : req.query.searchdate    };
+                    break;
+                    case 'cuisine' : 
+                    var id = { cuisine : req.query.searchdate    };
+                    break;
+                    case 'owner' : 
+                    var id = {  owner : req.query.searchdate   };
+                    break;
+                    default:
+                            var id = {  name: req.query.searchdate    };
+            }
+            console.log(id);
+            db2.collection("restaurant").find(id).toArray(function(err, data) {
+                if (data != null) {
+                    db.close();
+                    console.log(data);
+                        res.render('index', { searchdata: data  });     
+                }       
+                else{
+                    console.log('null');
+                    db.close(); }
+                }); 
+        }else {
+            db2.collection("restaurant").find({}).toArray(function(err, data) {
+                db.close();
+               // console.log(result[0].name);  
+                    res.render('index', {result: data})
+                });
+        }
+
+    });
+
     }
    // res.render('index');
    });
@@ -204,7 +252,6 @@ app.get('/display', (req, res) => {
             }       
             else{
                 console.log('null');
-              //  res.end('</form></body></html>');
                 db.close(); }
             }); 
         }); 
@@ -246,7 +293,6 @@ app.post('/update', function(req, res, next){
         console.log(req.session.username + fields.owner);
         if ( req.session.username == fields.owner ) {
             console.log('3');
-        // console.log(JSON.stringify(files));
             const filename = files.filetoupload.path;
             let title = "untitled";
             //
@@ -368,15 +414,82 @@ app.post('/create', function(req, res, next){
                                })
         });
 
-        res.redirect('/index');
+        res.redirect('/login');
 
     });
 });
+    //delete//
+app.get('/delete', (req, res) => {
+    res.render('delete');
+   });
+app.post('/delete', function(req,res) { 
+   // Connect to the db
+    if ( req.session.username == req.body.owner ) {
+   MongoClient.connect(url, function (err, db) {
+     if(err) throw err;
+     //Write databse Insert/Update/Query code here..
+     var db2 = db.db("pj381f");
+     console.log('mongodb is running!');
+     console.log("Switched to "+db2.databaseName+" database"); 
+     var doc = { _id : ObjectId(req.body._id) }; 
+     db2.collection("restaurant").deleteOne(doc, function(err, res) {
+        if (err) throw err;
+        console.log("Document deleted");
+        // close the connection to db when you are done with it
+        db.close();
+     }); 
+    });
+
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write('Delete was successful');
+    res.write('<form action="/index">');
+    res.write('<input type="submit" value="Go Back"/>');
+    res.write('</form>');
+    res.end();
+
+}else
+{
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write('You have not permission to delete this document!');
+    res.write('<form action="/index">');
+    res.write('<input type="submit" value="Go Back"/>');
+    res.write('</form>');
+    res.end();
+}
+
+
+});
+
+
+//restful api here
+app.get('/api/restaurant/read/name/:name', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+  //  res.write('get');
+    var result = {};
+
+
+
+    MongoClient.connect(url, function (err, db) {
+        if(err) throw err;
+        var db2 = db.db("pj381f");
+        console.log('mongodb is running!');
+        console.log("ResultFul API GETTING"); 
+
+        id = { name: req.params.name };
+            db2.collection("restaurant").find(id).toArray(function(err, data) {
+                if (data != null) {
+                    db.close();
+                    res.status(200).json(data).end();
+                }       
+                else{
+                    console.log('null');
+                    db.close(); }
+                }); 
+
+    });
+
     
-
-
-
-
+});
 
 
 

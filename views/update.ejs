@@ -53,12 +53,12 @@ if ( username != result.owner ) {  %>
                         <input type="text" name="latitude"  value="<%= result.address.coord.latitude %>"><hr />
                         <label for="longitude">Longitude</label>
                         <input type="text" name="longitude"  value="<%= result.address.coord.longitude %>" ><hr />
-                        
-                        <input type="file" name="filetoupload">
                         <label for="photo">Photo</label>
+                        <input type="file" name="filetoupload">
                         
-            
-                        <input type="hidden" name="owner" value="<%=username %>"  placeholder="owner" required>
+                        
+
+                        <input type="hidden" name="owner" value="<%=username %>"  placeholder="owner" required> <hr/><br>
                         <input type="submit" value='Edit'></button>
                 </form>
             </div>

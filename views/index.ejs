@@ -1,24 +1,55 @@
 
 <% if(!login) {%>
 <h2>Hello World</h2>
-<% }else{%>
+<% }else{ 
+    var count=0;
     
- <html>
-        <head>
-            <link href="/css/style.css" rel="stylesheet" type="text/css">
-        </head>
-                <body>
+    %>
+    
+    <% include header.ejs %>
 
-                <a href="/Create">Create New Restaurant   </a> 
-                <h3>Welcome <%=username%></h3>
+            <form action="/Create"><input type="submit" value="Create Restaurant"/></form>
+                <h1>Welcome <%=username%></h1>
 
-                <% result.forEach(element => { 
-                        %>    
-                <a href="/display?_id=<%= element._id%>"><%= element.name %> </a><br>
-                <% }); %>
+                <form action="/index" method="get">
+                 Search <input type='text' name='searchdate' />
+                    <select name='search'>
+                        <option name="name" value="name">name</option>
+                        <option name="borough" value="borough">borough</option>
+                        <option name="cuisine" value="mercedes">cuisine</option>
+                        <option name="owner" value="owner">owner</option>
+                    </select>
+                    <input type='submit' value='search' />
+                </form>
+                    
+                
+             <% 
+                     if( typeof(searchdata) !="undefined") {
+     
+                       console.log(searchdata.name );
+                    for ( var i = 0 ; i < searchdata.length; i++) {
+                       
+                            %> 
+                            <a href="/display?_id=<%= searchdata[i]._id%>"><%= searchdata[i].name %> </a><br> <hr/>
+                      
+                      <%
+                    }
+                }
+             %>
 
 
-                <h1><a href='/logout'>Logout</a></h1>
+
+                    <div class='all'>
+                    <% 
+                    if( typeof(result) !="undefined") {
+                    result.forEach(element => { 
+                         count++;   %>    
+                    <a href="/display?_id=<%= element._id%>"><%= element.name %> </a><br>
+                    <% });} %>
+                    </div>
+
+                    <br><br>
+                    <form action="/logout"><input type="submit" value="Logout"/></form>
                 </body>
 </html>
     <% }%>

@@ -22,8 +22,9 @@
                     result.rating = ""; 
                 %>
 
-
+                <% if ( result.photo != '' ) { %>
                 <center><img src="data:<%=result.mimetype%>;base64, <%=result.photo %>"></center>
+                <% }; %>
             <label>Name: <%= result.name %> </label><br><hr />
             <label>Borough: <%= result.borough %> </label><br><hr />
             <label>Cuisine: <%=result.cuisine%></label><br><hr />
@@ -35,12 +36,22 @@
             <label>Created by:  <%=result.owner %> </label><br><hr />
             <label>Map</label><hr />
             
-            <% console.log('test:' + result._id) %>
+
+
             <a href="/rate?_id=<%= result._id%>&ratename=<%= result.name%>">Rate</a>
             <a href="/update?_id=<%= result._id%>">Update</a>
-            <input type="button" value="Delete"/>
-            <form action="/index"><input type="submit" value="Go Back"/></form>
+            <form action='delete' method="post">
+                <input type='hidden' name='_id'value='<%= result._id%>'/>
+                <input type='hidden' name='owner'value='<%=result.owner%>'/>
+                <input type="submit" value="Delete"/>
             </form>
+            <form action='map' method="get">
+                    <input type='hidden' name='latitude'value='<%= result.address.coord.latitude %>'/>
+                    <input type='hidden' name='longitude'value='<%= result.address.coord.longitude %>'/>
+                    <input type="submit" value="Map"/>
+            </form>
+            <form action="/index"><input type="submit" value="Go Back"/></form>
+           
         
     </body>
 </html>

@@ -1,9 +1,14 @@
+<% include header.ejs %>
 <h2>Register</h2>
 <form action="/register" method="POST">
 
-      <input type="text" name="username"  placeholder="Username or email">
+      <input type="text" name="username"  required placeholder="Username or email">
 
       <input type="password" name="password" placeholder="Password">
 
-    <button type="submit" class="float">Login</button>
+    <input type="submit" value='Register'class="float">
+
+   
 </form>
+
+<form action="/login"><input type="submit" value="Go Back"/></form>
