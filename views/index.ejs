@@ -8,8 +8,20 @@
     
     <% include header.ejs %>
 
-            <form action="/Create"><input type="submit" value="Create Restaurant"/></form>
+            <!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<!-- Full width -->
+            
+
+
+            <form action="/Create">
+            
+                <button type="submit" class="btn" style="width:100%"><i class="fa fa-download"></i> Create Restaurant</button>
+            </form>
                 <h1>Welcome <%=username%></h1>
+                <h2>Total Restaurant number is : <%= result.length %></h2>
 
                 <form action="/index" method="get">
                  Search <input type='text' name='searchdate' />
@@ -22,7 +34,9 @@
                     <input type='submit' value='search' />
                 </form>
                     
-                
+                <form action="/index">
+                    <input type="submit" value="Refresh all Restaurant"/><br><br>
+                </form>
              <% 
                      if( typeof(searchdata) !="undefined") {
      
@@ -34,6 +48,8 @@
                       
                       <%
                     }
+                    
+                    
                 }
              %>
 
@@ -44,7 +60,7 @@
                     if( typeof(result) !="undefined") {
                     result.forEach(element => { 
                          count++;   %>    
-                    <a href="/display?_id=<%= element._id%>"><%= element.name %> </a><br>
+                    <a href="/display?_id=<%= element._id%>"><%= element.name %> </a><br><br> <hr/><br><br>
                     <% });} %>
                     </div>
 

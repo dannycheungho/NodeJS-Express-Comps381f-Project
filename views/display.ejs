@@ -13,13 +13,15 @@
                     if( !result.address.building ) 
                     result.address.building = ""; 
                     if( !result.address.zipcode ) 
-                    result.address.zipcode = ""; 
+                    result.address.coord.zipcode = ""; 
                     if( !result.address.coord.latitude ) 
-                    result.address.latitude = ""; 
+                    result.address.coord.latitude = ""; 
                     if( !result.address.coord.longitude ) 
                     result.address.longitude = ""; 
-                    if( !result.rating ) 
-                    result.rating = ""; 
+                    if( !result.grades.score ) 
+                    result.grades.score = ""; 
+                    if( !result.grades.user ) 
+                    result.grades.user = ""; 
                 %>
 
                 <% if ( result.photo != '' ) { %>
@@ -32,14 +34,15 @@
             <label>Building:  <%=result.address.building %></label><br><hr />
             <label>Zipcode: <%= result.address.zipcode %></label><br><hr />
             <label>GPS: <%= result.address.coord.latitude %> </label> , <label><%= result.address.coord.longitude %> </label><br><hr />
-            <label>Rating: <%= result.grades.score %> rated by <%= result.grades.user %>  </label><br><hr />
-            <label>Created by:  <%=result.owner %> </label><br><hr />
-            <label>Map</label><hr />
+
+            <label>Rating: <%= result.grades.score%> </label><label> ( <%=result.grades.user %> )  </label><br><hr />
+
+            <label>Created by:  <%=result.owner %> </label><br><hr /> <br>
             
 
 
             <a href="/rate?_id=<%= result._id%>&ratename=<%= result.name%>">Rate</a>
-            <a href="/update?_id=<%= result._id%>">Update</a>
+            <a href="/update?_id=<%= result._id%>">Update</a> <br><br><br>
             <form action='delete' method="post">
                 <input type='hidden' name='_id'value='<%= result._id%>'/>
                 <input type='hidden' name='owner'value='<%=result.owner%>'/>

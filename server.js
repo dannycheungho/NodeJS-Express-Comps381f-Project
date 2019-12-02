@@ -42,7 +42,11 @@ app.listen(app.listen(process.env.PORT || 8099 ))
 
 
 app.get('/map', function(req,res) {
+    if ( req.query.latitude = '' || req.query.longitude == '' )
+    res.send('Uncorrect GPS message');
+    else
     res.render('map', { latitude: req.query.latitude, longitude: req.query.longitude })
+
 });
 
 
@@ -150,7 +154,7 @@ app.post('/rate', (req, res) => {
                                             score: req.body.score,
                                     },
                     } };
-                        db2.collection("restaurant").updateOne( id ,newvalues, function(err, res) {
+                        db2.collection("restaurant").findOneAndUpdate( id ,newvalues , function(err, res) {
                             if (err) throw err;
                                // console.log("You"+ req.session.username +" has rated " + result.owner );      
                                db.close();
@@ -423,7 +427,12 @@ app.post('/create', function(req, res, next){
                                })
         });
 
-        res.redirect('/login');
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.write('Create Restaurant was successful');
+            res.write('<form action="/index">');
+            res.write('<input type="submit" value="Go Back"/>');
+            res.write('</form>');
+            res.end();
 
     });
 });
